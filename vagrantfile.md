@@ -24,6 +24,12 @@ Vagrant.configure("2") do |config|
   end
 end
 ```
+### get information of ports, users, and identityfile by running:
+
+
+```bash
+vagrant ssh-config
+```
 ### install packages such as vim,git,zip,gzip,docker and docker-compose from url
 ```bash
 ---
