@@ -4,6 +4,9 @@ vagrant init
 ```
 ### add phath of playbook and inventory files
 ```bash
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
 Vagrant.configure("2") do |config|
   #vagrant will wait for the machine to boot and be accessible
   config.vm.boot_timeout = 1000000000
