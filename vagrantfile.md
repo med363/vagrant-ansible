@@ -36,7 +36,7 @@ vagrant ssh-config
 ### install packages such as vim,git,zip,gzip,docker and docker-compose from url
 ```bash
 ---
-- host: machine1
+- hosts: machine1
   become: true
   tasks:
   - name: Install Some Package on Debian Linux
