@@ -35,28 +35,30 @@ vagrant ssh-config
 ```
 ### install packages such as vim,git,zip,gzip,docker and docker-compose from url
 ```bash
----
+------
 - hosts: machine1
   become: true
   tasks:
-  - name: Install Some Package on Debian Linux
-    apt:
-     name: '{{item}}'
-     state: latest
-    with_item:
-     - vim
-     - git
-     - zip
-     - gzip
-     - apache2
-     - docker.io
-    when: ansible_os_family == "Debian"
-  - name: Install docker-compose
-    remote_user: ubuntu
-    get_url: 
-      url : https://github.com/docker/compose/releases/download/1.25.1-rc1/docker-compose-Linux-x86_64
-      dest: /usr/local/bin/docker-compose
-      mode: 'u+x,g+x'
+   - name: Install Some Package on Debian Linux
+     apt:
+       name: '{{item}}'
+       state: latest
+     with_items:
+       - vim
+       - git
+       - zip
+       - gzip
+       - apache2
+       - docker.io
+     when: ansible_os_family == "Debian"
+   - name: Install docker-compose
+     remote_user: ubuntu
+     get_url:
+       url : https://github.com/docker/compose/releases/download/1.25.1-r>
+       dest: /usr/local/bin/docker-compose
+       mode: 'u+x,g+x'
+
+
 ```
 ### inisialize inventory
 ```bash
