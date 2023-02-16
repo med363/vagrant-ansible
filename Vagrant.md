@@ -1,4 +1,5 @@
 ### create vagrant file
+
 ```bash
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
@@ -93,6 +94,7 @@ Vagrant.configure("2") do |config|
 
         end
 end
+```
 
 
 ### playbook.yml
@@ -139,26 +141,26 @@ end
      when: ansible_os_family == "Debian"
  #  - name: Install docker-compose
  #    remote_user: ubuntu
+```
 
 ### inventory
 
 ```bash
-
 [lb1]
 192.168.56.10 ansible_ssh_pass=vagrant  ansible_ssh_user=vagrant
 [web1]
 192.168.56.11 ansible_ssh_pass=vagrant  ansible_ssh_user=vagrant
 [web2]
 192.168.56.12 ansible_ssh_pass=vagrant  ansible_ssh_user=vagrant
-
+```
 
 ```bash
 vagrant up
-
+```
 
 ### test connectivity
 
 ```bash
 ansible all -i inventory -m ping
-
+```
 
