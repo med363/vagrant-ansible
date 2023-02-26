@@ -2,6 +2,10 @@
 
 ### Automatically provision a Docker Swarm cluster composed of two masters and two workers
 
+### using shred to encrypt file
+```bash
+shred filename
+```
 ## Preconditions:
 
 * Linux, Windows or macOS host with at least 8GB RAM
