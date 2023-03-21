@@ -1,4 +1,5 @@
---
+```bash
+---
 version: '3.1'
 
 services:
@@ -33,4 +34,4 @@ services:
 volumes:
   wordpress:
   db:
-
+```
