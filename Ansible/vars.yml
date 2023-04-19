@@ -4,3 +4,4 @@ PACKAGES:
   - htop
   - tmux
   - docker-ce
+  - docker-compose

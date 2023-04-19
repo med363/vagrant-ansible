@@ -11,24 +11,9 @@
         
     - name: copy Docker Compose files
       copy: src=files/docker-compose.yml dest=/tmp/
-#       src: files/{{ item }}
-#       dest: /swarm-vagrant-ansible/Ansible/{{ item }}
-#     loop:
-#     - docker-compose.yml
-   
 
-   # use files parameter to use multiple docker-compose.yml files
-#   - name: deploy Docker Compose stack
-#     community.docker.docker_compose:
-#       project_src: /swarm-vagrant-ansible/Ansible
-#       files:
-#       - docker-compose.yml
-   
-
-#    - name: " Copy files directory"
-#      copy:
-#      src: files/docker-compose.yml
-#      dest: /tmp/
+    - name: Go to the folder and execute command
+      shell: cd /tmp/ && docker stack deploy -c docker-compose.yml wp
 
     - name: Test docker compose
       docker_compose:
