@@ -1,7 +1,6 @@
 ---
 - hosts: swarm-master-1
   become: true
-
   tasks:
     - name: Initialize the cluster
       shell: docker swarm init --advertise-addr 192.168.56.10 >> cluster_initialized.txt
@@ -11,6 +10,9 @@
         
     - name: copy Docker Compose files
       copy: src=files/docker-compose.yml dest=/tmp/
+
+    - name: copy theme of wordpress
+      copy: src=files/th-shop-mania.1.2.8.zip dest=/tmp/
 
     - name: Go to the folder and execute command
       shell: cd /tmp/ && docker stack deploy -c docker-compose.yml wp

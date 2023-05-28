@@ -1,35 +1,56 @@
----
-version: '3.1'
-
+version: '3'
 services:
-
-  wordpress:
-    image: wordpress
-    restart: always
-    ports:
-      - 8080:80
-    environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: user
-      WORDPRESS_DB_PASSWORD: password
-      WORDPRESS_DB_NAME: db
-    volumes:
-      - wordpress:/var/www/html
-
+  # Database
   db:
     image: mysql:5.7
+#    deploy:
+#      - replicas: 4
+#      endpoint_mode: 192.168.56.13
+    volumes:
+      - db_data:/var/lib/mysql
     restart: always
     environment:
-      MYSQL_DATABASE: db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_RANDOM_ROOT_PASSWORD: '1'
-    deploy:
-#mode define the replication model used to run the service on platform. Either global (exactly one container per physical node) or replicated (a specified number of containers). The default is replicate>
-      mode: global
-    volumes:
-      - db:/var/lib/mysql
-
-volumes:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    networks:
+      - wpsite
+  # phpmyadmin
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+#    deploy:
+#      - replicas: 4
+#      endpoint_mode: 192.168.56.13
+    restart: always
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - wpsite
+  # Wordpress
   wordpress:
-  db:
+    depends_on:
+      - db
+    image: wordpress:latest
+#   deploy:
+#      - replicas: 4
+#      endpoint_mode: 192.168.56.13
+    ports:
+      - '8000:80'
+    restart: always
+    volumes: ['./:/var/www/html']
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+    networks:
+      - wpsite
+networks:
+  wpsite:
+volumes:
+  db_data:
