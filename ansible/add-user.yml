@@ -1,39 +1,6 @@
 ---
-# name of the play
-# check accessible instance
-- name: Wait for ssh connection
-  hosts: lb1
-  gather_facts: False
-  tasks:
-    - name: ensure ssh port open
-      # let's tell ansible to wait 10 seconds to be true to do tasks.
-      wait_for:
-        port: 22
-        delay: 10
-        timeout: 100
-        # continue open ssh
-        search_regex: OpenSSH
-        # if you don't know the IP address before because it is dynamic.
-        host: '{{ (ansible_ssh_host|default(ansible_host))|default(ansible_host)|default(inventory_hostname) }}'
-      # you want to execute this task locally
-      delegate_to: lb1
-      vars:
-        ansible_connection: local
-        ansible_python_interpreter: /usr/bin/python
-
-- name: Install python3
-  hosts: lb1
-  become: yes
-  tasks:
-    - name: Install python3
-      apt:
-        name: python3
-        update_cache: yes
-        state: present
-
-
 - name: Show IP addresses of the target machine
-  hosts: lb1  # Replace with your target group or host
+  hosts: lb1
   tasks:
     - name: Run 'ip addr' command
       command: ip addr
@@ -43,13 +10,22 @@
       debug:
         var: ip_output.stdout_lines
 
-- name: Configure Keepalived
+- name: Install Keepalived and Configure
   hosts: lb1
   become: yes
-  vars:
-    virtual_ip: "192.168.1.19"  # Replace with your desired virtual IP address
-
   tasks:
+    - name: Check if Keepalived is installed
+      command: dpkg -l keepalived
+      register: keepalived_check
+      ignore_errors: true
+
+    - name: Install Keepalived if not installed
+      apt:
+        name: keepalived
+        state: present
+        update_cache: yes
+      when: keepalived_check.rc != 0
+
     - name: Create /etc/keepalived/keepalived.conf file
       blockinfile:
         path: /etc/keepalived/keepalived.conf
@@ -65,16 +41,29 @@
               state BACKUP
               priority 100
               virtual_router_id 51
-
               virtual_ipaddress {
-                  {{ virtual_ip }}
+                  192.168.1.19
               }
-
               track_script {
                   chk_haproxy
               }
           }
+      when: ansible_distribution == 'Ubuntu'  # Adjust this condition based on your OS
 
+- name: Install Docker if not installed
+  hosts: lb1
+  tasks:
+    - name: Check if Docker is installed
+      command: dpkg -l docker.io
+      register: docker_check
+      ignore_errors: yes
+
+    - name: Install Docker if not installed
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+      when: docker_check.rc != 0
 
 - name: Install Docker
   hosts: lb1
@@ -85,19 +74,17 @@
       apt:
         name: docker
         update_cache: yes
-        # if want to install package
         state: present
-        # if want to uninstall package
-        # state: absent
 
 - name: Create users
   hosts: lb1
-  become: yes  # Run tasks with root/sudo privileges
+  become: yes
   tasks:
     - name: Create user
       user:
-        name: amine  # Username
-        state: present  # Ensure the user is present
-        createhome: yes  # Create the user's home directory
+        name: amine
+        state: present
+        createhome: yes
     - debug:
         msg: "{{ shell_result.stdout_lines }}"
+
