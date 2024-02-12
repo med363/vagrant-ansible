@@ -1,6 +1,250 @@
+# # # ---
+# # # - name: Show IP addresses of the lb1
+# # #   hosts: lb1
+# # #   become: yes
+# # #   tasks:
+# # #     - name: Run 'ip addr' command
+# # #       command: ip addr
+# # #       register: ip_output
+
+# # #     - name: Display IP addresses
+# # #       debug:
+# # #         var: ip_output.stdout_lines
+
+# # #     - name: Install Docker
+# # #       apt:
+# # #         name: docker.io
+# # #         state: present
+# # #         update_cache: yes
+
+# # #     - name: Start Docker service
+# # #       service:
+# # #         name: docker
+# # #         state: started
+
+# # #     # - name: Pull NGINX image
+# # #     #   docker_image:
+# # #     #     name: nginx
+# # #     #     state: present
+
+# # #     - name: Pull NGINX image and create container
+# # #       docker_container:
+# # #         name: my_nginx_container
+# # #         image: nginx
+# # #         state: started
+# # #         ports:
+# # #           - "80:80"
+
+
+
+      
+
+# # #     # - name: Check if HAProxy is installed
+# # #     #   command: dpkg -l haproxy
+# # #     #   register: haproxy_check
+# # #     #   ignore_errors: true
+
+# # #     # - name: Print HAProxy installation status
+# # #     #   debug:
+# # #     #     msg: "HAProxy is {{ 'installed' if haproxy_check.rc == 0 else 'not installed' }}"
+
+# # #     # - name: Install HAProxy if not installed
+# # #     #   apt:
+# # #     #     name: haproxy
+# # #     #     state: present
+# # #     #     update_cache: yes
+# # #     #   when: haproxy_check.rc != 0  # Only install if HAProxy is not installed
+
+# # #     # - name: Check if Keepalived is installed
+# # #     #   command: dpkg -l keepalived
+# # #     #   register: keepalived_check
+# # #     #   ignore_errors: true
+
+# # #     # - name: Print Keepalived installation status
+# # #     #   debug:
+# # #     #     msg: "Keepalived is {{ 'installed' if keepalived_check.rc == 0 else 'not installed' }}"
+
+# # #     # - name: Install Keepalived if not installed
+# # #     #   apt:
+# # #     #     name: keepalived
+# # #     #     state: present
+# # #     #     update_cache: yes
+# # #     #   when: keepalived_check.rc != 0  # Only install if Keepalived is not installed
+
+# # #     # - name: Ensure the directory exists for keepalived.conf
+# # #     #   become: yes
+# # #     #   file:
+# # #     #     path: /etc/keepalived
+# # #     #     state: directory
+
+# # #     # - name: Debug directory existence
+# # #     #   debug:
+# # #     #     msg: "/etc/keepalived directory exists: {{ ansible_facts['file_exists']['/etc/keepalived'] | default(false) }}"
+
+# # #     # - name: Debug file existence
+# # #     #   debug:
+# # #     #     msg: "/etc/keepalived/keepalived.conf file exists: {{ ansible_facts['file_exists']['/etc/keepalived/keepalived.conf'] | default(false) }}"
+
+# # #     # - name: Create /etc/keepalived/keepalived.conf file
+# # #     #   blockinfile:
+# # #     #     path: /etc/keepalived/keepalived.conf
+# # #     #     block: |
+# # #     #       vrrp_script chk_haproxy {
+# # #     #           script "killall -0 haproxy"
+# # #     #           interval 2
+# # #     #           weight 2
+# # #     #       }
+
+# # #     #       vrrp_instance VI_1 {
+# # #     #           interface ens33
+# # #     #           state BACKUP
+# # #     #           priority 100
+# # #     #           virtual_router_id 51
+# # #     #           virtual_ipaddress {
+# # #     #               192.168.1.19
+# # #     #           }
+# # #     #           track_script {
+# # #     #               chk_haproxy
+# # #     #           }
+# # #     #       }
+# # #     #   when: keepalived_check.rc == 0  # Only execute if Keepalived is installed
+# # # ---
+# # # - name: Show IP addresses of lb1
+# # #   hosts: lb1
+# # #   become: yes
+# # #   tasks:
+# # #     - name: Run 'ip addr' command
+# # #       command: ip addr
+# # #       register: ip_output
+
+# # #     - name: Display IP addresses
+# # #       debug:
+# # #         var: ip_output.stdout_lines
+
+# # #     - name: Install Docker module for Python
+# # #       pip:
+# # #         name: docker
+# # #         executable: pip3
+# # #         state: present
+
+# # #     - name: Install Docker
+# # #       apt:
+# # #         name: docker.io
+# # #         state: present
+# # #         update_cache: yes
+
+# # #     - name: Start Docker service
+# # #       service:
+# # #         name: docker
+# # #         state: started
+
+# # #     - name: Pull NGINX image and create container
+# # #       docker_container:
+# # #         name: my_nginx_container
+# # #         image: nginx
+# # #         state: started
+# # #         ports:
+# # #           - "80:80"
+# # ---
+# # - name: Show IP addresses of lb1
+# #   hosts: lb1
+# #   become: yes
+# #   tasks:
+# #     - name: Run 'ip addr' command
+# #       command: ip addr
+# #       register: ip_output
+
+# #     - name: Display IP addresses
+# #       debug:
+# #         var: ip_output.stdout_lines
+
+# #     - name: Install Python 3 and python3-pip
+# #       apt:
+# #         name: 
+# #           - python3
+# #           - python3-pip
+# #         state: present
+# #         update_cache: yes
+
+# #     - name: Install Docker module for Python
+# #       pip:
+# #         name: docker
+# #         executable: pip3
+# #         state: present
+
+# #     - name: Install Docker
+# #       apt:
+# #         name: docker.io
+# #         state: present
+# #         update_cache: yes
+
+# #     - name: Start Docker service
+# #       service:
+# #         name: docker
+# #         state: started
+
+# #     - name: Pull NGINX image and create container
+# #       docker_container:
+# #         name: my_nginx_container
+# #         image: nginx
+# #         state: started
+# #         ports:
+# #           - "80:80"
+
+# ---
+# - name: Show IP addresses of lb1
+#   hosts: lb1
+#   become: yes
+#   tasks:
+#     - name: Run 'ip addr' command
+#       command: ip addr
+#       register: ip_output
+
+#     - name: Display IP addresses
+#       debug:
+#         var: ip_output.stdout_lines
+
+#     - name: Install Python 3 and python3-pip
+#       become: yes
+#       apt:
+#         name: 
+#           - python3
+#           - python3-pip
+#         state: present
+#         update_cache: yes
+
+#     - name: Install Docker module for Python
+#       become: yes
+#       pip:
+#         name: docker
+#         executable: pip3
+#         state: present
+
+#     - name: Install Docker
+#       become: yes
+#       command: apt-get install docker.io -y
+#       register: docker_install_result
+#       ignore_errors: yes
+
+#     - name: Start Docker service
+#       become: yes
+#       service:
+#         name: docker
+#         state: started
+
+#     - name: Pull NGINX image and create container
+#       become: yes
+#       docker_container:
+#         name: my_nginx_container
+#         image: nginx
+#         state: started
+#         ports:
+#           - "80:80"
+
 ---
-- name: Show IP addresses of the target machine
+- name: Show IP addresses of lb1
   hosts: lb1
+  become: yes
   tasks:
     - name: Run 'ip addr' command
       command: ip addr
@@ -10,81 +254,35 @@
       debug:
         var: ip_output.stdout_lines
 
-- name: Install Keepalived and Configure
-  hosts: lb1
-  become: yes
-  tasks:
-    - name: Check if Keepalived is installed
-      command: dpkg -l keepalived
-      register: keepalived_check
-      ignore_errors: true
+    - name: Install Python 3 and python3-pip
+      become: yes
+      command: apt-get install -y python3 python3-pip
 
-    - name: Install Keepalived if not installed
-      apt:
-        name: keepalived
-        state: present
-        update_cache: yes
-      when: keepalived_check.rc != 0
+    # - name: Install Docker module for Python
+    #   become: yes
+    #   pip:
+    #     name: docker
+    #     executable: pip3
+    #     state: present
 
-    - name: Create /etc/keepalived/keepalived.conf file
-      blockinfile:
-        path: /etc/keepalived/keepalived.conf
-        block: |
-          vrrp_script chk_haproxy {
-              script "killall -0 haproxy"
-              interval 2
-              weight 2
-          }
-
-          vrrp_instance VI_1 {
-              interface ens33
-              state BACKUP
-              priority 100
-              virtual_router_id 51
-              virtual_ipaddress {
-                  192.168.1.19
-              }
-              track_script {
-                  chk_haproxy
-              }
-          }
-      when: ansible_distribution == 'Ubuntu'  # Adjust this condition based on your OS
-
-- name: Install Docker if not installed
-  hosts: lb1
-  tasks:
-    - name: Check if Docker is installed
-      command: dpkg -l docker.io
-      register: docker_check
+    - name: Install Docker
+      become: yes
+      command: apt-get install -y docker.io
+      register: docker_install_result
       ignore_errors: yes
 
-    - name: Install Docker if not installed
-      apt:
-        name: docker.io
-        state: present
-        update_cache: yes
-      when: docker_check.rc != 0
-
-- name: Install Docker
-  hosts: lb1
-  become: yes
-  become_user: root
-  tasks:
-    - name: Install Docker
-      apt:
+    - name: Start Docker service
+      become: yes
+      service:
         name: docker
-        update_cache: yes
-        state: present
+        state: started
 
-- name: Create users
-  hosts: lb1
-  become: yes
-  tasks:
-    - name: Create user
-      user:
-        name: amine
-        state: present
-        createhome: yes
-    - debug:
-        msg: "{{ shell_result.stdout_lines }}"
+    - name: Pull NGINX image and create container
+      become: yes
+      docker_container:
+        name: my_nginx_container
+        image: nginx
+        state: started
+        ports:
+          - "80:80"
 
